@@ -1,0 +1,67 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environments
+venv/
+.env/
+.venv/
+env/
+ENV/
+
+# VS Code or PyCharm project files
+.vscode/
+.idea/
+
+# Distribution / packaging
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Test / coverage / reports
+htmlcov/
+.coverage
+.tox/
+.nox/
+.pytest_cache/
+.junit.xml
+coverage.xml
+.cache
+
+# mypy / type checker
+.mypy_cache/
+.dmypy.json
+.pyre/
+
+# pyright
+pyrightconfig.json
+
+# Bandit security scanner
+bandit.yaml
+
+# FastAPI / Uvicorn / logs
+*.log
+
+# dotenv
+*.env
+.env.*
+
+# PyInstaller
+*.manifest
+*.spec
+
+# SQLite (if used locally)
+*.sqlite3
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# macOS/Linux/Windows system files
+.DS_Store
+Thumbs.db

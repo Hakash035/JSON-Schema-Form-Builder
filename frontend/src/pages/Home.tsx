@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
-  Code, 
   CheckCircle, 
   Zap, 
   Settings, 
   GitBranch,
   FileText,
-  Layers
+  Layers,
+  Braces
 } from 'lucide-react';
 import { useForm } from '../context/FormContext';
 import SchemaUploader from '../components/SchemaUploader';
@@ -88,7 +88,7 @@ const Home: React.FC = () => {
           <div className="text-center">
             <div className="flex items-center justify-center gap-3 mb-6">
               <div className="p-3 bg-blue-100 rounded-2xl">
-                <Code className="w-8 h-8 text-blue-600" />
+                <Braces className="w-8 h-8 text-blue-600" />
               </div>
               <h1 className="text-4xl sm:text-5xl font-bold text-gray-900">
                 Schema Form Builder
@@ -219,7 +219,7 @@ const Home: React.FC = () => {
               onClick={() => setShowSchemaInput(true)}
               className="bg-blue-500 hover:bg-blue-400 text-white font-semibold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2"
             >
-              <Code className="w-5 h-5" />
+              <Braces className="w-5 h-5" />
               Start from Scratch
             </button>
           </div>

@@ -87,7 +87,9 @@ const AIFormGenerator: React.FC<AIFormGeneratorProps> = ({ onSchemaGenerated, on
             className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
             rows={3}
             disabled={isGenerating}
+            maxLength={500}
           />
+          
           <p className="text-xs text-gray-500 mt-1">
             Press Cmd/Ctrl + Enter to generate quickly
           </p>

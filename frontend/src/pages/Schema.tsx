@@ -33,7 +33,8 @@ const Schema: React.FC = () => {
 
     if (schemaId) {
       try {
-        const data = await getSubmissions(schemaId, currentPage * itemsPerPage, itemsPerPage);
+        let skip = currentPage * itemsPerPage;
+        const data = await getSubmissions(schemaId, skip, itemsPerPage);
         setData({
           type: "submission",
           data
@@ -94,6 +95,15 @@ const Schema: React.FC = () => {
   };
 
   useEffect(() => {
+    setCurrentPage(0)
+  }, []);
+
+  useEffect(() => {
+    setCurrentPage(0)
+    loadDataCount();
+  }, [schemaId]);
+
+  useEffect(() => {
     if (schemaId) {
       setData({
         type: 'submission',
@@ -103,10 +113,6 @@ const Schema: React.FC = () => {
     loadData();
   }, [schemaId, currentPage]);
 
-  useEffect(() => {
-    setCurrentPage(0)
-    loadDataCount();
-  }, [schemaId]);
 
   const handleViewSubmission = (id: string) => {
     schemaId ? navigate(`/submission/${id}`) : navigate(`/schema/${id}`);
@@ -193,7 +199,7 @@ const Schema: React.FC = () => {
 
 
         {/* Pagination */}
-        {totalRecords > 0 && (
+        {(totalRecords > itemsPerPage && !loading) && (
           <div className="flex justify-center items-center p-4 gap-2">
             <button
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 0))}

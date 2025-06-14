@@ -103,10 +103,6 @@ export const schemaExamples: SchemaExample[] = [
       type: 'object',
       required: ['experience'],
       properties: {
-        currentlyEmployed: {
-          type: 'boolean',
-          title: 'Currently Employed'
-        },
         experience: {
           type: 'array',
           title: 'Work Experience',
@@ -142,7 +138,11 @@ export const schemaExamples: SchemaExample[] = [
               }
             }
           }
-        }
+        },
+        currentlyEmployed: {
+          type: 'boolean',
+          title: 'Currently Employed'
+        },
       }
     }
   },

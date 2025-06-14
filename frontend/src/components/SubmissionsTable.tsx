@@ -1,5 +1,5 @@
 import React from 'react';
-import { Eye, Calendar, FileText, Plus } from 'lucide-react';
+import { Eye, Calendar, FileText, Plus, PlusCircle } from 'lucide-react';
 import { JSONSchema, SchemaData, Submission } from '../types';
 import { useForm } from '../context/FormContext';
 import { useNavigate } from 'react-router-dom';
@@ -139,22 +139,34 @@ const SubmissionsTable: React.FC<SubmissionsTableSubmission | SubmissionsTableSc
         {submissions.map((submission) => (
           <div key={submission.id} className="p-4">
             <div className="flex items-center justify-between mb-2">
-              <div className="text-sm font-medium text-gray-900">
-                #{submission.id}
+              {type === "schemaData" && (
+                <div className="text-sm font-medium text-gray-900">
+                  {(submission as SchemaData).schemaTitle}
+                </div>
+              )}
+              {type === "submission" && (
+                <div className="text-sm font-medium text-gray-900">
+                  {(submission as Submission).data && getPreviewLine((submission as Submission).data)}
+                </div>
+              )}
+              
+              <div className='flex items-center justify-between gap-1'>
+                <button
+                  onClick={() => onViewSubmission(submission.id)}
+                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-900 transition-colors text-sm"
+                >
+                  <Eye className="w-4 h-4" />
+                </button>
+                {type === "schemaData" && (
+                  <button
+                    onClick={() => handleLoadForm((submission as SchemaData).schema, (submission as SchemaData).id)}
+                    className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-900 transition-colors rounded-lg px-2"
+                  >
+                    <PlusCircle className="w-4 h-4" />
+                  </button>
+                )}
               </div>
-              <button
-                onClick={() => onViewSubmission(submission.id)}
-                className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-900 transition-colors text-sm"
-              >
-                <Eye className="w-4 h-4" />
-                View
-              </button>
             </div>
-            {type === "schemaData" && (
-              <div className="text-sm text-gray-600 mb-1">
-                {(submission as SchemaData).schemaTitle}
-              </div>
-            )}
             <div className="flex items-center gap-2 text-xs text-gray-500">
               <Calendar className="w-3 h-3" />
               {submission.date}

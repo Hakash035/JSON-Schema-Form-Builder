@@ -74,7 +74,7 @@ const SubmissionDetail: React.FC = () => {
       <div className={`ml-${depth + 4} space-y-2`}>
         {Object.entries(value).map(([childKey, childValue]) => (
           <div key={childKey}>
-            <div className="text-sm font-medium text-gray-700">
+            <div className="text-sm font-bold text-gray-700">
               {schema?.properties?.[childKey]?.title || childKey}
             </div>
             <div className="text-gray-900">
@@ -168,7 +168,7 @@ const SubmissionDetail: React.FC = () => {
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Submitted Data</h2>
             {Object.entries(submission.data).map(([key, value]) => (
               <div key={key} className="border-b border-gray-100 pb-3">
-                <div className="text-sm font-medium text-gray-700 mb-1 break-words whitespace-pre-wrap max-w-full overflow-x-auto">
+                <div className="text-sm font-bold text-gray-700 mb-1 break-words whitespace-pre-wrap max-w-full overflow-x-auto">
                   {submission.schema.properties?.[key]?.title || key}
                 </div>
                 <div className="text-gray-900 break-words whitespace-pre-wrap max-w-full overflow-x-auto">

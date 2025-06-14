@@ -240,20 +240,10 @@ const SchemaUploader: React.FC<SchemaUploaderProps> = ({
         </div>
         
         <div className="mt-6 space-y-3 text-sm text-gray-600">
-          <div className="bg-blue-50 rounded-lg p-4">
-            <h3 className="font-semibold text-blue-900 mb-2">✨ Enhanced Features</h3>
-            <ul className="space-y-1 text-blue-800">
-              <li>• <strong>Required Fields:</strong> Fields marked as required show an asterisk (*) and validate on blur</li>
-              <li>• <strong>Conditional Logic:</strong> Use if/then/else to show different fields based on user input</li>
-              <li>• <strong>Advanced Types:</strong> Full support for arrays, nested objects, and complex validation</li>
-              <li>• <strong>Real-time Validation:</strong> See validation errors as you type with detailed messages</li>
-            </ul>
-          </div>
-          
           <div className="bg-gray-50 rounded-lg p-4">
-            <h3 className="font-semibold text-gray-900 mb-2">📁 Import Options</h3>
+            <h3 className="font-semibold text-gray-900 mb-2">📌 Important Info</h3>
             <p className="text-gray-700">
-              <strong>Import Form State:</strong> Upload a previously exported form state JSON file to restore both the schema and form data.
+              This application supports JSON Schemas that follow the official <a className="text-blue-400" href='https://json-schema.org/' target='_blank'>json-schema.org</a> specification and conventions.
             </p>
           </div>
         </div>

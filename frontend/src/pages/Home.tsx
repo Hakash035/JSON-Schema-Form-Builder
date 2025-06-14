@@ -90,7 +90,6 @@ const Home: React.FC = () => {
             
             <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8 leading-relaxed">
               Build JSON Schema forms dynamically, with live validation and AI-assisted generation. 
-              Perfect for developers who need rapid form prototyping and testing.
             </p>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">

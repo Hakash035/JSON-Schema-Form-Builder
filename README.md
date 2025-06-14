@@ -72,7 +72,7 @@ Below is a summary of each API endpoint included in the FastAPI backend:
 
 ---
 
-### `GET /submission/{submission_id}`
+### `GET /submission-details/{submission_id}`
 
 - **Summary**: Get Submission Detail  
 - **Description**: Fetch a detailed form submission and its associated schema using the submission ID.

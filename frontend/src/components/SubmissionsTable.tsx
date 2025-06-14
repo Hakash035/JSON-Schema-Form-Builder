@@ -37,6 +37,18 @@ const SubmissionsTable: React.FC<SubmissionsTableSubmission | SubmissionsTableSc
     navigate('/form')
   }
 
+  const getPreviewLine = (data: Record<string, any>) => {
+    return Object.entries(data)
+      .slice(0, 3) // Show only first 2–3 keys for brevity
+      .map(([key, value]) => {
+        if (Array.isArray(value)) return `${key}: [ ... ]`;
+        if (typeof value === 'object' && value !== null) return `${key}: { ... }`;
+        if (typeof value === 'string' && value.length > 20) return `${key}: ${value.substring(0, 20)}...`;
+        return `${key}: ${value}`;
+      })
+      .join(', ') + (Object.keys(data).length > 3 ? ', ...' : '');
+  };
+
   if (loading) {
     return (
       <div className="bg-white rounded-lg shadow-lg p-6">
@@ -70,14 +82,11 @@ const SubmissionsTable: React.FC<SubmissionsTableSubmission | SubmissionsTableSc
           <thead className="bg-gray-50">
             <tr>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                {schemaId ? "Submission ID" : "Schema ID"}
-              </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Date
               </th>
-              {!schemaId && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Schema Title
-              </th>}
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {schemaId ? "Data Preview" : "Schema Title"}
+              </th>
               <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
               </th>
@@ -86,18 +95,19 @@ const SubmissionsTable: React.FC<SubmissionsTableSubmission | SubmissionsTableSc
           <tbody className="bg-white divide-y divide-gray-200">
             {submissions.map((submission) => (
               <tr key={submission.id} className="hover:bg-gray-50">
-                <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                  #{submission.id.slice(0, 10)}...
-                </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <div className="flex items-center gap-2">
                     <Calendar className="w-4 h-4" />
                     {submission.date}
                   </div>
                 </td>
-                {type === "schemaData" && (
+                {type === "schemaData" ? (
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                     {(submission as SchemaData).schemaTitle}
+                  </td>
+                ) : (
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                      {(submission as Submission).data && getPreviewLine((submission as Submission).data)}
                   </td>
                 )}
                 <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium flex items-center justify-center gap-2">

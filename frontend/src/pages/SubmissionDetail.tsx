@@ -46,6 +46,47 @@ const SubmissionDetail: React.FC = () => {
   //   navigate('/form');
   // };
 
+  const renderValue = (value: any, schema: any, depth = 0) => {
+    if (value === null || value === undefined) return 'N/A';
+
+    // Boolean
+    if (typeof value === 'boolean') return value ? 'Yes' : 'No';
+
+    // Primitive
+    if (typeof value !== 'object') return value.toString();
+
+    // Array
+    if (Array.isArray(value)) {
+      if (value.length === 0) return '[]';
+      return (
+        <ul className={`ml-${depth + 4} space-y-1 list-none`}>
+          {value.map((item, idx) => (
+            <li key={idx}>
+              {typeof item === 'object' ? renderValue(item, schema?.items, depth + 2) : item.toString()}
+            </li>
+          ))}
+        </ul>
+      );
+    }
+
+    // Object
+    return (
+      <div className={`ml-${depth + 4} space-y-2`}>
+        {Object.entries(value).map(([childKey, childValue]) => (
+          <div key={childKey}>
+            <div className="text-sm font-medium text-gray-700">
+              {schema?.properties?.[childKey]?.title || childKey}
+            </div>
+            <div className="text-gray-900">
+              {renderValue(childValue, schema?.properties?.[childKey], depth + 2)}
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  };
+  
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50 py-8 px-4">
@@ -118,7 +159,7 @@ const SubmissionDetail: React.FC = () => {
               {submission.schemaTitle}
             </h1>
             <div className="flex items-center gap-4 mt-2 text-sm text-gray-600">
-              <span>Submission ID: #{submission.id}</span>
+              {/* <span>Submission ID: #{submission.id}</span> */}
               <span>Date: {submission.date}</span>
             </div>
           </div>
@@ -127,15 +168,16 @@ const SubmissionDetail: React.FC = () => {
             <h2 className="text-lg font-semibold text-gray-900 mb-4">Submitted Data</h2>
             {Object.entries(submission.data).map(([key, value]) => (
               <div key={key} className="border-b border-gray-100 pb-3">
-                <div className="text-sm font-medium text-gray-700 mb-1">
-                  {submission.schema.properties[key]?.title || key}
+                <div className="text-sm font-medium text-gray-700 mb-1 break-words whitespace-pre-wrap max-w-full overflow-x-auto">
+                  {submission.schema.properties?.[key]?.title || key}
                 </div>
-                <div className="text-gray-900">
-                  {typeof value === 'boolean' ? (value ? 'Yes' : 'No') : value?.toString() || 'N/A'}
+                <div className="text-gray-900 break-words whitespace-pre-wrap max-w-full overflow-x-auto">
+                  {renderValue(value, submission.schema.properties?.[key])}
                 </div>
               </div>
             ))}
           </div>
+
         </div>
 
         {/* Collapsible Sections */}

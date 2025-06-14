@@ -6,6 +6,7 @@ import { downloadJSON } from '../utils/fileHelpers';
 import Field from './Field';
 import ArrayField from './ArrayField';
 import ObjectField from './ObjectField';
+import { useForm } from '../context/FormContext';
 
 interface FormRendererProps {
   schema: JSONSchema;
@@ -24,6 +25,7 @@ const FormRenderer: React.FC<FormRendererProps> = ({
   const [errors, setErrors] = useState<ValidationError[]>([]);
   const [touchedFields, setTouchedFields] = useState<Set<string>>(new Set());
   const [showSchema, setShowSchema] = useState(false);
+  const { schemaId } = useForm()
 
   useEffect(() => {
     setFormData(initialData);
@@ -92,6 +94,7 @@ const FormRenderer: React.FC<FormRendererProps> = ({
 
   const handleExport = () => {
     const exportData = {
+      schemaId,
       schema,
       data: formData
     };
@@ -220,7 +223,7 @@ const FormRenderer: React.FC<FormRendererProps> = ({
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form noValidate onSubmit={handleSubmit} className="space-y-6">
           {Object.entries(effectiveSchema.properties || {}).map(([name, property]) => {
             const fieldValue = formData[name];
             const isRequired = effectiveSchema.required?.includes(name);

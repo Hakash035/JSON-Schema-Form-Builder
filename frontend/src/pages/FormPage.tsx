@@ -52,7 +52,7 @@ const FormPage: React.FC = () => {
           className="inline-flex items-center gap-2 text-gray-600 hover:text-gray-900 transition-colors mb-4"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to Schema Input
+          Back to Home
         </button>
       </div>
       

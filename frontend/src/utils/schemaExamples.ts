@@ -154,7 +154,7 @@ export const schemaExamples: SchemaExample[] = [
     schema: {
       title: 'Developer Profile',
       type: 'object',
-      required: ['name'],
+      required: ['name', 'hasGithub'],
       properties: {
         name: {
           type: 'string',
@@ -196,6 +196,49 @@ export const schemaExamples: SchemaExample[] = [
             title: 'Portfolio Website',
             format: 'uri',
             description: 'Link to your portfolio or personal website'
+          }
+        }
+      }
+    }
+  },
+  {
+    id: '97157d05-113b-4f14-b11d-da54ea7c6e77',
+    title: 'Conditional Field Value Change',
+    description: 'Fields values Changes based on other selections',
+    category: 'Conditional',
+    schema: {
+      title: "Location Form",
+      type: "object",
+      required: ["state", "city"],
+      properties: {
+        state: {
+          type: "string",
+          title: "State",
+          enum: ["Tamil Nadu", "Maharashtra"]
+        },
+        city: {
+          type: "string",
+          title: "City"
+        }
+      },
+      if: {
+        properties: {
+          state: { "const": "Tamil Nadu" }
+        }
+      },
+      then: {
+        properties: {
+          city: {
+            type: "string",
+            enum: ["Chennai", "Coimbatore", "Madurai"]
+          }
+        }
+      },
+      else: {
+        properties: {
+          city: {
+            type: "string",
+            enum: ["Mumbai", "Pune", "Nagpur"]
           }
         }
       }

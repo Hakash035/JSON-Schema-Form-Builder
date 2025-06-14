@@ -5,17 +5,41 @@ const API_BASE = import.meta.env.VITE_API_URL; // Using a real API for demo
 
 export const apiClient = axios.create({
   baseURL: API_BASE,
-  timeout: 10000,
+  timeout: 90000,
 });
+
+const formatReadableDate = (isoString: string) => {
+  const date = new Date(isoString);
+
+  const day = date.getDate().toString().padStart(2, '0');
+  const monthShort = date.toLocaleString('en-US', { month: 'short' });
+  const year = date.getFullYear();
+
+  let hours = date.getHours();
+  const minutes = date.getMinutes().toString().padStart(2, '0');
+  const ampm = hours >= 12 ? 'PM' : 'AM';
+  hours = hours % 12 || 12;
+
+  return `${day} ${monthShort} ${year}, ${hours}:${minutes} ${ampm}`;
+};
 
 export const submitForm = async (data: FormData, schema: JSONSchema | null, schemaId: string | null): Promise<{ success: boolean; id?: string }> => {
   try {
     // Simulate form submission
-    const response = await apiClient.post('/submit-form', {
-      schema_id: schemaId || null,
-      schema_json : schema,
-      form_data: data
-    });
+    let payload;
+    if(schemaId === null || schemaId.trim() === "" || schemaId === undefined){
+      payload = {
+        schema_id: null,
+        schema_json : schema,
+        form_data: data
+      }
+    } else {
+      payload = {
+        schema_id: schemaId,
+        form_data: data
+      }
+    }
+    const response = await apiClient.post('/submit-form', payload);
     
     return { success: true, id: response.data.submission_id };
   } catch (error) {
@@ -31,7 +55,7 @@ export const getSchemas = async (skip:number, limit: number): Promise<SchemaData
 
     return response.data.map((schema: any) => ({
       id: schema.id.toString(),
-      date: schema.created_at.split('T')[0],
+      date: formatReadableDate(schema.created_at),
       schemaTitle: schema.name,
       schema: schema.schema_json
     }));
@@ -48,7 +72,7 @@ export const getSubmissions = async (schemaId: string, skip: number, limit: numb
     
     return response.data.map((post: any) => ({
       id: post.id.toString(),
-      date: post.submitted_at.split('T')[0],
+      date: formatReadableDate(post.submitted_at),
       data: post.form_data,
     }));
   } catch (error) {
@@ -59,12 +83,12 @@ export const getSubmissions = async (schemaId: string, skip: number, limit: numb
 
 export const getSubmissionDetails = async (id: string): Promise<SubmissionDetails> => {
   try {
-    const response = await apiClient.get(`/submission/${id}`);
+    const response = await apiClient.get(`/submission-details/${id}`);
     const post = response.data;
     
     return {
       id: post.id.toString(),
-      date: post.submitted_at.split('T')[0],
+      date: formatReadableDate(post.submitted_at),
       data: post.form_data,
       schema: post.schema_json,
       schemaTitle: post.name
@@ -85,7 +109,7 @@ export const getSchemasCount = async(): Promise<number> => {
   return response.data.totalRecords
 }
 
-export const generateSchemaWithAI = async(prompt: string): Promise<string> => {
+export const generateSchemaWithAI = async(prompt: string): Promise<object> => {
   try {
     const response = await apiClient.post(`/ai-response`, {
       prompt: prompt

@@ -13,14 +13,16 @@ router = APIRouter()
 
 @router.post("/submit-form", summary="Submit Form", description="Validate and submit form data based on a JSON Schema. If no schema_id is provided, a new schema will be created and associated with the submission.")
 async def submit_form(payload: SubmissionIn, db: AsyncSession = Depends(get_db)):
-    validate_json_schema(payload.schema_json, payload.form_data)
     if(payload.schema_id is not None):
         schema_obj = await crud.get_schema_by_id(db, payload.schema_id)
         if not schema_obj:
             raise HTTPException(status_code=404, detail="Schema not found")
+        
+        validate_json_schema(schema_obj.schema_json, payload.form_data)
         submission = await crud.create_submission(db, payload.schema_id, payload.form_data)
         return {"submission_id": submission.id}
     
+    validate_json_schema(payload.schema_json, payload.form_data)
     schema_obj = await crud.create_schema(db, payload.schema_json.get('title', 'Untitled Form'), payload.schema_json)
     submission = await crud.create_submission(db, schema_obj.id, payload.form_data)
     return {"submission_id": submission.id}
@@ -43,7 +45,7 @@ async def get_schemas_count(schema_id: UUID, db: AsyncSession = Depends(get_db))
 async def get_all_submissions(schema_id: UUID, skip: int = 0, limit: int = 10, db: AsyncSession = Depends(get_db)):
     return await crud.list_submissions(db, schema_id, skip, limit)
 
-@router.get("/submission/{submission_id}", response_model=SubmissionDetailOut, summary="Get Submission Detail", description="Fetch detailed form submission and its associated schema by submission ID.")
+@router.get("/submission-details/{submission_id}", response_model=SubmissionDetailOut, summary="Get Submission Detail", description="Fetch detailed form submission and its associated schema by submission ID.")
 async def get_submission_detail(submission_id: UUID, db: AsyncSession = Depends(get_db)):
     result = await crud.get_submission_detail(db, submission_id)
     if not result:

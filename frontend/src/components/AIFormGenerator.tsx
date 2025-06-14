@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Sparkles, Loader2 } from 'lucide-react';
 import { generateSchemaWithAI } from '../utils/apiClient';
+import { isValidJSON, validateJSONSchema } from '../utils/validation';
+import { useForm } from '../context/FormContext';
 
 interface AIFormGeneratorProps {
   onSchemaGenerated: (schema: object) => void;
@@ -10,6 +12,31 @@ interface AIFormGeneratorProps {
 const AIFormGenerator: React.FC<AIFormGeneratorProps> = ({ onSchemaGenerated, onError }) => {
   const [prompt, setPrompt] = useState('');
   const [isGenerating, setIsGenerating] = useState(false);
+  const { addToast } = useForm()
+
+  const validateSchema = (text: string) => {
+    if (!text.trim()) {
+      return false;
+    }
+
+    if (!isValidJSON(text)) {
+      addToast('Please Try again, Something went wrong', 'error')
+      return false;
+    }
+
+    try {
+      const parsed = JSON.parse(text);
+      const validation = validateJSONSchema(parsed);
+      if(validation.errors.length > 0) {
+        addToast('Please Try again, Something went wrong', 'error')
+        return false;
+      }
+      return true;
+    } catch (error) {
+      addToast('Please Try again, Something went wrong', 'error')
+      return false;
+    }
+  };
 
   const handleGenerate = async () => {
     if (!prompt.trim()) {
@@ -20,6 +47,9 @@ const AIFormGenerator: React.FC<AIFormGeneratorProps> = ({ onSchemaGenerated, on
     setIsGenerating(true);
     try {
       const schema = await generateSchemaWithAI(prompt);
+      if(!validateSchema(JSON.stringify(schema))) {
+        return;
+      }
       onSchemaGenerated(schema);
       setPrompt(''); // Clear the prompt on success
     } catch (error) {

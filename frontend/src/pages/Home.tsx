@@ -26,14 +26,21 @@ const Home: React.FC = () => {
     setSchema(schema);
     if (schemaId) {
       setSchemaId(schemaId);
+    } else {
+      setSchemaId(null)
     }
     setFormData({});
     addToast('Schema loaded successfully!', 'success');
     navigate('/form');
   };
 
-  const handleFormStateLoad = (formState: FormState) => {
+  const handleFormStateLoad = (formState: FormState, schemaId?: string) => {
     setSchema(formState.schema);
+    if (schemaId) {
+      setSchemaId(schemaId);
+    } else {
+      setSchemaId(null)
+    }
     setFormData(formState.data);
     addToast('Form state imported successfully!', 'success');
     navigate('/form');

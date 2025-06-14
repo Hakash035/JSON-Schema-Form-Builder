@@ -5,8 +5,8 @@ import { readJSONFile, validateFormStateFile } from '../utils/fileHelpers';
 import { JSONSchema, FormState } from '../types';
 
 interface SchemaUploaderProps {
-  onSchemaLoad: (schema: JSONSchema) => void;
-  onFormStateLoad: (formState: FormState) => void;
+  onSchemaLoad: (schema: JSONSchema, schemaId?: string) => void;
+  onFormStateLoad: (formState: FormState, schemaId?: string) => void;
   onError: (message: string) => void;
 }
 
@@ -75,14 +75,14 @@ const SchemaUploader: React.FC<SchemaUploaderProps> = ({
 
     setIsLoading(true);
     try {
-      const data = await readJSONFile(file);
-      
+      const _data = await readJSONFile(file);
+      const {schemaId, ...data} = _data
       if (validateFormStateFile(data)) {
         // It's a form state file
-        onFormStateLoad(data);
+        onFormStateLoad(data, schemaId);
       } else if (validateJSONSchema(data).isValid) {
         // It's a schema file
-        onSchemaLoad(data);
+        onSchemaLoad(data, schemaId);
       } else {
         onError('Invalid file format. Please upload a valid JSON schema or form state file.');
       }

@@ -8,7 +8,7 @@ class SchemaIn(BaseModel):
     schema_json: Dict[str, Any]
 
 class SubmissionIn(BaseModel):
-    schema_json: Dict[str, Any]  # Used for validation
+    schema_json: Dict[str, Any] | None = None # Used for validation
     form_data: Dict[str, Any]
     schema_id: UUID | None = None
 

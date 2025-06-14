@@ -52,8 +52,12 @@ def validate_json_schema(schema: Dict[str, Any], data: Dict[str, Any]):
                 raise HTTPException(status_code=400, detail=f"Field '{key}' must be at least {prop['minLength']} characters")
             if "maxLength" in prop and len(value) > prop["maxLength"]:
                 raise HTTPException(status_code=400, detail=f"Field '{key}' must be at most {prop['maxLength']} characters")
-            if "pattern" in prop and not re.match(prop["pattern"], value):
+            if "pattern" in prop and not re.fullmatch(prop["pattern"], value):
                 raise HTTPException(status_code=400, detail=f"Field '{key}' does not match required pattern")
+            # Basic format validation (optional)
+            if "format" in prop:
+                if prop["format"] == "email" and not re.fullmatch(r"[^@]+@[^@]+\.[^@]+", value):
+                    raise HTTPException(status_code=400, detail=f"Field '{key}' is not a valid email")
 
         # Number constraints
         if expected_type in ["number", "integer"]:
@@ -64,6 +68,9 @@ def validate_json_schema(schema: Dict[str, Any], data: Dict[str, Any]):
 
         # Array validation
         if expected_type == "array":
+            if not isinstance(value, list):
+                raise HTTPException(status_code=400, detail=f"Field '{key}' must be an array")
+
             if "minItems" in prop and len(value) < prop["minItems"]:
                 raise HTTPException(status_code=400, detail=f"Field '{key}' must have at least {prop['minItems']} items")
             if "maxItems" in prop and len(value) > prop["maxItems"]:
@@ -74,15 +81,31 @@ def validate_json_schema(schema: Dict[str, Any], data: Dict[str, Any]):
             if isinstance(items_schema, dict):
                 for i, item in enumerate(value):
                     try:
-                        validate_json_schema(
-                            {"type": items_schema.get("type"), "properties": items_schema.get("properties", {}), "required": items_schema.get("required", [])},
-                            item if isinstance(item, dict) else {"value": item}
-                        )
+                        if items_schema.get("type") in ["string", "number", "boolean", "integer"]:
+                            if not is_type_valid(item, items_schema.get("type")):
+                                raise HTTPException(status_code=400, detail=f"Item {i} in '{key}' must be of type {items_schema['type']}")
+                        elif items_schema.get("type") == "array":
+                            # Recursive for nested arrays
+                            validate_json_schema(
+                                {"type": "array", **items_schema},
+                                item
+                            )
+                        elif items_schema.get("type") == "object":
+                            validate_json_schema(
+                                {
+                                    "type": "object",
+                                    "properties": items_schema.get("properties", {}),
+                                    "required": items_schema.get("required", [])
+                                },
+                                item
+                            )
                     except HTTPException as e:
                         raise HTTPException(status_code=400, detail=f"Error in array '{key}' at index {i}: {e.detail}")
 
         # Object validation (nested)
         if expected_type == "object":
+            if not isinstance(value, dict):
+                raise HTTPException(status_code=400, detail=f"Field '{key}' must be an object")
             validate_json_schema(
                 {
                     "type": "object",
@@ -96,8 +119,8 @@ def validate_json_schema(schema: Dict[str, Any], data: Dict[str, Any]):
 def is_type_valid(value: Any, expected: str) -> bool:
     match expected:
         case "string": return isinstance(value, str)
-        case "number": return isinstance(value, (int, float))
-        case "integer": return isinstance(value, int)
+        case "number": return isinstance(value, (int, float)) and not isinstance(value, bool)
+        case "integer": return isinstance(value, int) and not isinstance(value, bool)
         case "boolean": return isinstance(value, bool)
         case "object": return isinstance(value, dict)
         case "array": return isinstance(value, list)

@@ -130,7 +130,7 @@ export const validateFormData = (schema: JSONSchema, data: Record<string, any>):
             message = `Must be a ${error.params?.type}`;
             break;
           case 'format':
-            message = `Invalid ${error.params?.format} format`;
+            message = error.params?.format != "date" ? `Invalid ${error.params?.format} format` : "Invalid date format (YYYY-MM-DD)";
             break;
           case 'if':
             // Skip if/then/else validation errors as they're handled by the conditional logic

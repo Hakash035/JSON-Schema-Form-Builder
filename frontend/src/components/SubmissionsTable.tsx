@@ -43,7 +43,7 @@ const SubmissionsTable: React.FC<SubmissionsTableSubmission | SubmissionsTableSc
       .map(([key, value]) => {
         if (Array.isArray(value)) return `${key}: [ ... ]`;
         if (typeof value === 'object' && value !== null) return `${key}: { ... }`;
-        if (typeof value === 'string' && value.length > 20) return `${key}: ${value.substring(0, 20)}...`;
+        if (typeof value === 'string' && value.length > 12) return `${key}: ${value.substring(0, 12)}...`;
         return `${key}: ${value}`;
       })
       .join(', ') + (Object.keys(data).length > 3 ? ', ...' : '');

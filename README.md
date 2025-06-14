@@ -142,9 +142,9 @@ uvicorn app.main:app --reload
 
 ## ☁️ Deployment Details
 
-### Frontend – Netlify
+### Frontend – Vercel
 
-- Platform: Netlify
+- Platform: Vercel
 - Framework: Vite (React + TypeScript)
 - Build Command: `npm install && npm run build`
 - Publish Directory: `dist`

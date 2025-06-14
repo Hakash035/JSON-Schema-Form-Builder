@@ -27,6 +27,13 @@ This project is structured as:
 
 ---
 
+## 🚀 Live Demo
+
+- **Frontend**: [https://json-schema-form-builder-nu.vercel.app/](https://json-schema-form-builder-nu.vercel.app/)
+- **Backend Docs (Swagger)**: [json-schema-form-builder-backend.onrender.com/docs](https://json-schema-form-builder-backend.onrender.com/docs)
+
+---
+
 ## API Endpoints Documentation (Swagger Summary)
 
 All backend routes are available via the Swagger UI at:
@@ -84,14 +91,6 @@ Below is a summary of each API endpoint included in the FastAPI backend:
 - **Summary**: Generate Schema with AI  
 - **Description**: Generate a valid JSON Schema using AI based on the user’s prompt.  
   Returns structured JSON if successful.
-
----
-
-
-## 🚀 Live Demo
-
-- **Frontend**: [https://json-schema-form-builder-nu.vercel.app/](https://json-schema-form-builder-nu.vercel.app/)
-- **Backend Docs (Swagger)**: [json-schema-form-builder-backend.onrender.com/docs](https://json-schema-form-builder-backend.onrender.com/docs)
 
 ---
 

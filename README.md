@@ -11,19 +11,19 @@ This project is structured as:
 
 ## 🔧 Features
 
-- 🧩 Dynamic form rendering from any valid JSON Schema
-- ✅ Live client-side validation with inline error messaging
-- 🔁 Support for all basic schema types:
+- Dynamic form rendering from any valid JSON Schema
+- Live client-side validation with inline error messaging
+- Support for all basic schema types:
   - `string`, `number`, `boolean`, `object`, `array`, `array of objects`
-- 🔐 Schema-defined `required`, `enum`, `minLength`, `maxLength`, `pattern`, `minimum`, `maximum`
-- 🧠 Conditional rendering using `if/then/else`
-- 🗃️ Server-side validation (FastAPI) using shared schema logic
-- 💾 Data persistence using PostgreSQL
-- 💡 "Generate with AI" feature — auto-generates schema from user prompt
-- 📥 JSON import/export functionality
-- 📚 Prebuilt schema suggestions for quick testing
-- 🧼 Clean, responsive UI with light-blue themed design
-- 🌐 Swagger UI for backend testing and API reference
+- Schema-defined `required`, `enum`, `minLength`, `maxLength`, `pattern`, `minimum`, `maximum`
+- Conditional rendering using `if/then/else`
+- Server-side validation (FastAPI) using shared schema logic
+- Data persistence using PostgreSQL
+- "Generate with AI" feature — auto-generates schema from user prompt
+- JSON import/export functionality
+- Prebuilt schema suggestions for quick testing
+- Clean, responsive UI with light-blue themed design
+- Swagger UI for backend testing and API reference
 
 ---
 
@@ -104,7 +104,7 @@ Below is a summary of each API endpoint included in the FastAPI backend:
 
 ---
 
-### 📦 Frontend
+### Frontend
 
 ```bash
 cd frontend
@@ -118,7 +118,7 @@ npm install
 npm run dev
 ```
 
-### 🐍 Backend
+### Backend
 ```bash
 cd backend
 cp .env.example .env  # Create your env file
@@ -165,7 +165,7 @@ uvicorn app.main:app --reload
 
 ---
 
-### 🟨 Database – Render PostgreSQL
+### Database – Render PostgreSQL
 
 - Platform: Render PostgreSQL
 - Purpose: Used for persisting validated form submissions

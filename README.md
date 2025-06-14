@@ -90,7 +90,7 @@ Below is a summary of each API endpoint included in the FastAPI backend:
 
 ## 🚀 Live Demo
 
-- **Frontend**: [json-schema-form-builder.netlify.app](https://json-schema-form-builder.netlify.app/)
+- **Frontend**: [https://json-schema-form-builder-nu.vercel.app/](https://json-schema-form-builder-nu.vercel.app/)
 - **Backend Docs (Swagger)**: [json-schema-form-builder-backend.onrender.com/docs](https://json-schema-form-builder-backend.onrender.com/docs)
 
 ---
